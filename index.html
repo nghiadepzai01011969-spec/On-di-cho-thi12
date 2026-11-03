@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise 9. Listening - Ôn Đề Cương Tiếng Anh 9 (Nano Banana Pro × Google Veo AI)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #090d16;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+
+    /* Animation Đáp Án Đúng: Xanh Lá Cây */
+    @keyframes correctPulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.75); }
+      45% { transform: scale(1.03); box-shadow: 0 0 26px 8px rgba(34, 197, 94, 0.45); }
+      100% { transform: scale(1); box-shadow: 0 0 14px 2px rgba(34, 197, 94, 0.3); }
+    }
+
+    @keyframes solvedGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(34, 197, 94, 0.25), inset 0 0 8px rgba(34, 197, 94, 0.15); }
+      50% { box-shadow: 0 0 22px rgba(34, 197, 94, 0.55), inset 0 0 14px rgba(34, 197, 94, 0.3); }
+    }
+
+    /* Animation Đáp Án Sai: Ăn Cám */
+    @keyframes wrongShake {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      15% { transform: translateX(-10px) rotate(-1.5deg); }
+      30% { transform: translateX(9px) rotate(1.5deg); }
+      45% { transform: translateX(-7px) rotate(-1deg); }
+      60% { transform: translateX(6px) rotate(1deg); }
+      75% { transform: translateX(-3px); }
+    }
+
+    @keyframes camPop {
+      0% { opacity: 0; transform: translateY(-16px) scale(0.6) rotate(-12deg); }
+      65% { opacity: 1; transform: translateY(3px) scale(1.1) rotate(4deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+    }
+
+    .option-btn {
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn:hover:not(.locked) {
+      transform: translateY(-2px) scale(1.008);
+      border-color: #38bdf8;
+      background: rgba(30, 41, 59, 0.95);
+    }
+
+    .option-btn:active:not(.locked) {
+      transform: scale(0.985);
+    }
+
+    .option-correct {
+      background: linear-gradient(135deg, #052e16 0%, #14532d 55%, #166534 100%) !important;
+      border-color: #22c55e !important;
+      color: #ffffff !important;
+      animation: correctPulse 0.55s ease-out forwards;
+    }
+
+    .option-solved {
+      background: linear-gradient(135deg, #052e16 0%, #14532d 60%, #15803d 100%) !important;
+      border-color: #4ade80 !important;
+      color: #ffffff !important;
+      animation: solvedGlow 2.4s infinite ease-in-out;
+    }
+
+    .option-wrong {
+      background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 60%, #991b1b 100%) !important;
+      border-color: #f87171 !important;
+      color: #fee2e2 !important;
+      animation: wrongShake 0.5s ease-in-out forwards;
+    }
+
+    .cam-badge {
+      animation: camPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    #camToast {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-20 selection:bg-emerald-500 selection:text-black">
+
+  <!-- Toast Thông Báo Ăn Cám / Chính Xác -->
+  <div id="camToast" class="fixed top-4 right-4 z-50 pointer-events-none opacity-0 translate-y-[-20px] max-w-sm">
+    <div id="camToastInner" class="px-4 py-3 rounded-2xl shadow-2xl border flex items-center gap-3 backdrop-blur-md">
+      <span id="camToastIcon" class="text-3xl">🥣</span>
+      <div>
+        <div id="camToastTitle" class="font-extrabold text-sm">ĂN CÁM RỒI BRO ƠI!</div>
+        <div id="camToastSub" class="text-xs opacity-90">Chọn lại đáp án xanh lá cây nhé!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thanh Điều Khiển Cố Định -->
+  <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-lg border-b border-slate-800/80 shadow-lg">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Logo & Tiêu đề -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 via-emerald-500 to-cyan-500 flex items-center justify-center text-base shadow-md font-black text-slate-950">
+          EX9
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-base sm:text-lg text-white tracking-tight">EXERCISE 9. LISTENING</h1>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 border border-yellow-400/40">
+              🍌 Nano Banana Pro × 🎬 Veo AI
+            </span>
+          </div>
+          <p class="text-xs text-slate-400">Trọn bộ 10 câu Listening (5 câu Mr Vinh + 5 câu Điền từ) • Siêu nhẹ 60FPS</p>
+        </div>
+      </div>
+
+      <!-- 2 Chức Năng Chính: 1. Đáp Án Đã Giải & 2. Chọn Đáp Án -->
+      <div class="flex items-center gap-1.5 bg-slate-900 p-1.5 rounded-2xl border border-slate-800">
+        <button
+          id="btnModeSolved"
+          onclick="switchMode('solved')"
+          class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+        >
+          <span>✅</span>
+          <span>1. Đáp Án Đã Giải</span>
+        </button>
+        <button
+          id="btnModePractice"
+          onclick="switchMode('practice')"
+          class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+        >
+          <span>🎯</span>
+          <span>2. Chọn Đáp Án</span>
+        </button>
+      </div>
+
+      <!-- Điểm số & Tiện ích -->
+      <div class="flex items-center gap-2">
+        <div class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold flex items-center gap-2">
+          <span class="text-emerald-400">🟢 Đúng: <span id="statCorrect">0</span>/10</span>
+          <span class="text-slate-600">|</span>
+          <span class="text-amber-400">🥣 Cám: <span id="statCam">0</span></span>
+        </div>
+
+        <button
+          id="btnSoundToggle"
+          onclick="toggleSound()"
+          class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition cursor-pointer"
+        >
+          🔊 Âm thanh: BẬT
+        </button>
+
+        <button
+          onclick="resetAllProgress()"
+          class="px-3 py-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-200 text-xs font-bold border border-rose-800/60 transition cursor-pointer"
+        >
+          🔄 Làm Lại
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 pt-5 space-y-6">
+
+    <!-- MÀN HÌNH TRỰC QUAN HÓA NANO BANANA PRO × GOOGLE VEO AI (Nằm ngay trên đầu trang, tự động đổi theo từng câu) -->
+    <section id="veoStageSection" class="rounded-3xl bg-slate-900/95 border border-slate-700/90 shadow-2xl overflow-hidden">
+      <!-- Thanh tiêu đề Studio -->
+      <div class="px-5 py-3.5 bg-slate-950 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl">🍌🎬</span>
+          <div>
+            <h2 id="stageTitle" class="font-extrabold text-sm sm:text-base text-white">
+              Nano Banana Pro × Google Veo AI: Đang mô phỏng Câu 3 (Mr Vinh)
+            </h2>
+            <p class="text-xs text-slate-400">Bấm chọn bất kỳ câu nào bên dưới để đổi cảnh AI tương ứng tức thì</p>
+          </div>
+        </div>
+
+        <!-- Nút chuyển nhanh 10 cảnh tương ứng 10 câu Listening -->
+        <div class="flex flex-wrap items-center gap-1" id="sceneQuickButtons"></div>
+      </div>
+
+      <!-- Khung Canvas 60FPS -->
+      <div class="p-4 space-y-3">
+        <div class="relative rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 aspect-[16/8] sm:aspect-[16/7] flex items-center justify-center">
+          <canvas id="veoCanvas" width="840" height="360" class="w-full h-full object-contain"></canvas>
+
+          <!-- Huy hiệu góc trái -->
+          <div class="absolute top-3 left-3 flex flex-wrap items-center gap-2 pointer-events-none">
+            <span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-yellow-400 text-slate-950 shadow">
+              🍌 Nano Banana Pro Visual
+            </span>
+            <span id="veoStatusBadge" class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500 text-slate-950 shadow">
+              🎬 Google Veo AI: Đang Chạy 60FPS
+            </span>
+          </div>
+
+          <!-- Phụ đề nổi trên video -->
+          <div class="absolute bottom-3 inset-x-4 text-center pointer-events-none">
+            <div id="veoSubtitle" class="inline-block bg-black/85 text-emerald-300 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl border border-emerald-500/40 shadow-lg">
+              Đáp án chuẩn: B — Mr Vinh usually wears a green uniform with reflective stripes.
+            </div>
+          </div>
+        </div>
+
+        <!-- Thanh công cụ điều khiển Video & Style Nano Banana Pro -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-950/90 px-4 py-2.5 rounded-2xl border border-slate-800">
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              onclick="toggleVeoPlay()"
+              id="btnVeoPlay"
+              class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition cursor-pointer"
+            >
+              ⏸ Tạm dừng cảnh
+            </button>
+            <button
+              onclick="speakCurrentScene()"
+              class="px-3.5 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs transition cursor-pointer"
+            >
+              🔊 Thuyết Minh Giọng AI
+            </button>
+            <button
+              onclick="nextScene()"
+              class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition cursor-pointer"
+            >
+              ⏭ Cảnh Câu Tiếp Theo
+            </button>
+          </div>
+
+          <!-- Đổi Style Nano Banana Pro -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs text-slate-400 mr-1">Style 🍌:</span>
+            <button onclick="setBananaStyle('neon')" id="style-neon" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-yellow-400 text-slate-950 cursor-pointer">Neon Cyber</button>
+            <button onclick="setBananaStyle('studio')" id="style-studio" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer">3D Studio</button>
+            <button onclick="setBananaStyle('blueprint')" id="style-blueprint" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer">Blueprint</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bộ lọc 2 phần nhỏ trong Exercise 9. Listening -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="filterPart('all')" id="tab-all" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500 text-slate-950 transition cursor-pointer">
+          🎧 Toàn bộ Exercise 9 Listening (10 câu)
+        </button>
+        <button onclick="filterPart('part1')" id="tab-part1" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+          1️⃣ Phần 1: Trắc nghiệm A, B, C, D (Câu 1 → 5)
+        </button>
+        <button onclick="filterPart('part2')" id="tab-part2" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+          2️⃣ Phần 2: Điền từ ≤ 2 từ (Câu 1 → 5)
+        </button>
+      </div>
+
+      <!-- 2 Nút Nghe Cả Bài Tapescript -->
+      <div class="flex items-center gap-2">
+        <button
+          onclick="speakFullAudio('vinh')"
+          class="px-3 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition cursor-pointer"
+        >
+          🔊 Nghe Bài 1 (Mr Vinh)
+        </button>
+        <button
+          onclick="speakFullAudio('time')"
+          class="px-3 py-2 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs font-bold transition cursor-pointer"
+        >
+          🔊 Nghe Bài 2 (Trang, Phong, Tom)
+        </button>
+      </div>
+    </div>
+
+    <!-- Danh sách 10 câu hỏi của Exercise 9. Listening -->
+    <div id="questionsContainer" class="space-y-4"></div>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // DỮ LIỆU CHỈ RIÊNG EXERCISE 9. LISTENING (10 CÂU: 5 TRẮC NGHIỆM + 5 ĐIỀN TỪ)
+    // =========================================================================
+    const QUESTIONS = [
+      // PHẦN 1: Listen again and choose the correct answer A, B, C or D (1-5)
+      {
+        id: "p1_q1",
+        shortLabel: "1.1",
+        part: "part1",
+        partHeader: "* Listen again and choose the correct answer A, B, C or D",
+        badge: "Phần 1 • Câu 1",
+        title: "1. What is the name of the writing contest?",
+        tapescript: "🎧 Audio: \"This was written by Mi, a grade 9 student, who won the first prize in the writing contest called 'My Favourite Community Helper'.\"",
+        options: [
+          { key: "A", text: "A. My favourite craftsman" },
+          { key: "B", text: "B. My favourite teacher" },
+          { key: "C", text: "C. My favourite celebrity" },
+          { key: "D", text: "D. My favourite community helper" }
+        ],
+        correct: "D",
+        paperNote: "Trên tờ giấy câu này chưa khoanh — Đáp án đúng là D!",
+        explanation: "Cuộc thi viết tên là 'My Favourite Community Helper' (Người giúp đỡ cộng đồng yêu thích nhất của tôi).",
+        voiceText: "Question 1. What is the name of the writing contest? The correct answer is D: My favourite community helper."
+      },
+      {
+        id: "p1_q2",
+        shortLabel: "1.2",
+        part: "part1",
+        badge: "Phần 1 • Câu 2",
+        title: "2. Mr Vinh is a ________.",
+        tapescript: "🎧 Audio: \"There are many great community helpers in our neighbourhood, but my favourite one is Mr Vinh, the garbage collector.\"",
+        options: [
+          { key: "A", text: "A. police officer" },
+          { key: "B", text: "B. firefighter" },
+          { key: "C", text: "C. garbage collector" },
+          { key: "D", text: "D. electrician" }
+        ],
+        correct: "C",
+        paperNote: "Đáp án đúng là C. garbage collector (nhân viên thu gom rác).",
+        explanation: "Trong bài nghe bạn Mi giới thiệu rõ: 'my favourite one is Mr Vinh, the garbage collector'.",
+        voiceText: "Question 2. Mr Vinh is a garbage collector. Correct answer is C."
+      },
+      {
+        id: "p1_q3",
+        shortLabel: "1.3",
+        part: "part1",
+        badge: "Phần 1 • Câu 3 (⚠️ SỬA CHỖ KHOANH CHÌ)",
+        title: "3. Mr Vinh usually wears ________ with reflective stripes.",
+        tapescript: "🎧 Audio: \"Mr Vinh is a tall and slim man. He usually wears a green uniform with reflective stripes.\"",
+        options: [
+          { key: "A", text: "A. an orange uniform" },
+          { key: "B", text: "B. a green uniform" },
+          { key: "C", text: "C. a yellow uniform" },
+          { key: "D", text: "D. a blue uniform" }
+        ],
+        correct: "B",
+        paperWarn: true,
+        paperNote: "⚠️ CẨN THẬN: Trên giấy khoanh chì A (an orange uniform), nhưng đáp án chuẩn bài nghe SGK là B (a green uniform)!",
+        explanation: "Chú Vinh mặc đồng phục màu XANH LÁ CÂY có sọc phản quang ('a green uniform with reflective stripes'). Câu 'orange uniform' là câu bẫy False trong SGK.",
+        voiceText: "Question 3. Mr Vinh usually wears a green uniform with reflective stripes. Be careful, not orange! The correct answer is B: a green uniform."
+      },
+      {
+        id: "p1_q4",
+        shortLabel: "1.4",
+        part: "part1",
+        badge: "Phần 1 • Câu 4",
+        title: "4. What time does he arrive at Mi's neighbourhood every day?",
+        tapescript: "🎧 Audio: \"Every day he goes to our neighbourhood at 6 p.m. with a garbage cart.\"",
+        options: [
+          { key: "A", text: "A. 6 p.m" },
+          { key: "B", text: "B. 7 p.m" },
+          { key: "C", text: "C. 8 p.m" },
+          { key: "D", text: "D. 9 p.m" }
+        ],
+        correct: "A",
+        paperNote: "Trên giấy khoanh chì A (6 p.m) — Chính xác!",
+        explanation: "Mỗi ngày chú Vinh đến khu phố của Mi lúc 6 giờ tối (6 p.m.). Còn 9 p.m. là giờ chú quay lại đổ các thùng rác.",
+        voiceText: "Question 4. What time does he arrive at Mi's neighbourhood every day? At 6 p.m. Correct answer is A."
+      },
+      {
+        id: "p1_q5",
+        shortLabel: "1.5",
+        part: "part1",
+        badge: "Phần 1 • Câu 5",
+        title: "5. He shares information about his work and the importance of sorting ________.",
+        tapescript: "🎧 Audio: \"He talks with the people in our community cheerfully about his work and the importance of sorting rubbish.\"",
+        options: [
+          { key: "A", text: "A. books" },
+          { key: "B", text: "B. food" },
+          { key: "C", text: "C. rubbish" },
+          { key: "D", text: "D. clothes" }
+        ],
+        correct: "C",
+        paperNote: "Trên giấy khoanh chì C (rubbish) — Chính xác!",
+        explanation: "'Sorting rubbish' là phân loại rác (thành rác tái chế được và rác không tái chế được).",
+        voiceText: "Question 5. He shares information about his work and the importance of sorting rubbish. Correct answer is C."
+      },
+
+      // PHẦN 2: Listen and fill in each blank with no more than TWO words (1-5)
+      {
+        id: "p2_q1",
+        shortLabel: "2.1",
+        part: "part2",
+        partHeader: "* You will hear Trang, Phong, and Tom talking about how to manage their time effectively. Listen and fill in each blank with no more than TWO words.",
+        badge: "Phần 2 • Câu 1 (Điền ≤ 2 từ)",
+        title: "1. Trang enters what she has to do into a ____________ at the beginning of each term.",
+        tapescript: "🎧 Audio (Trang): \"At the beginning of each term, I take a broad view of what I have to do by entering the due dates and test dates into a calendar.\"",
+        fillBlankAnswer: "calendar",
+        options: [
+          { key: "A", text: "A. calendar" },
+          { key: "B", text: "B. routine" },
+          { key: "C", text: "C. notebook" },
+          { key: "D", text: "D. diary" }
+        ],
+        correct: "A",
+        paperNote: "Trên giấy viết chì 'calendar' — Chính xác! (Lưu ý viết đúng chữ -dar cuối từ).",
+        explanation: "Từ cần điền (1 từ): 'calendar' (quyển lịch).",
+        voiceText: "Part 2, Question 1. Trang enters what she has to do into a calendar at the beginning of each term."
+      },
+      {
+        id: "p2_q2",
+        shortLabel: "2.2",
+        part: "part2",
+        badge: "Phần 2 • Câu 2 (⚠️ SỬA CHỖ VIẾT CHÌ)",
+        title: "2. Trang often uses ____________ to mark project due dates and exam times on her calendar.",
+        tapescript: "🎧 Audio (Trang): \"I often do these with different colours, for example, red for deadlines, green for exams.\"",
+        fillBlankAnswer: "different colours",
+        altAnswers: ["different colors", "colours", "colors"],
+        options: [
+          { key: "A", text: "A. calender" },
+          { key: "B", text: "B. different colours" },
+          { key: "C", text: "C. one colour" },
+          { key: "D", text: "D. small notes" }
+        ],
+        correct: "B",
+        paperWarn: true,
+        paperNote: "⚠️ CẨN THẬN: Trên giấy đang viết chì nhầm là 'calender'. Đáp án đúng phải là 'different colours' (2 từ)!",
+        explanation: "Cuối câu đã có 'on her calendar' rồi, chỗ trống cần điền công cụ Trang dùng để đánh dấu là 'different colours' (các màu sắc khác nhau).",
+        voiceText: "Part 2, Question 2. Trang often uses different colours to mark project due dates and exam times on her calendar."
+      },
+      {
+        id: "p2_q3",
+        shortLabel: "2.3",
+        part: "part2",
+        badge: "Phần 2 • Câu 3 (Điền ≤ 2 từ)",
+        title: "3. Phong ____________ his cell phone and signs out of social media accounts when he starts his work.",
+        tapescript: "🎧 Audio (Phong): \"When it's time to start my work, I turn off my cell phone and sign out of social media accounts.\"",
+        fillBlankAnswer: "turns off",
+        options: [
+          { key: "A", text: "A. turn off" },
+          { key: "B", text: "B. turns on" },
+          { key: "C", text: "C. turns off" },
+          { key: "D", text: "D. switches on" }
+        ],
+        correct: "C",
+        paperNote: "Trên giấy viết chì 'turns off' (có chia -s) — Rất chuẩn!",
+        explanation: "Từ cần điền (2 từ): 'turns off' (tắt điện thoại). Nhớ chia thêm -s ('turns') vì chủ ngữ là ngôi thứ 3 số ít 'Phong' (song song với 'signs out' phía sau).",
+        voiceText: "Part 2, Question 3. Phong turns off his cell phone and signs out of social media accounts when he starts his work."
+      },
+      {
+        id: "p2_q4",
+        shortLabel: "2.4",
+        part: "part2",
+        badge: "Phần 2 • Câu 4 (Điền ≤ 2 từ)",
+        title: "4. Tom tries not to leave homework until just before the ____________.",
+        tapescript: "🎧 Audio (Tom): \"I never leave homework until the day before it's due... so I'm not stressed out to meet the due dates.\"",
+        fillBlankAnswer: "due date",
+        altAnswers: ["due dates"],
+        options: [
+          { key: "A", text: "A. due date" },
+          { key: "B", text: "B. exam day" },
+          { key: "C", text: "C. next term" },
+          { key: "D", text: "D. night time" }
+        ],
+        correct: "A",
+        paperNote: "Trên giấy viết chì 'due date' — Chính xác!",
+        explanation: "Từ cần điền (2 từ): 'due date' (hạn chót nộp bài).",
+        voiceText: "Part 2, Question 4. Tom tries not to leave homework until just before the due date."
+      },
+      {
+        id: "p2_q5",
+        shortLabel: "2.5",
+        part: "part2",
+        badge: "Phần 2 • Câu 5 (⚠️ BỔ SUNG CÂU BỎ TRỐNG)",
+        title: "5. Tom ____________ his projects and coming tests and adds them to his schedule.",
+        tapescript: "🎧 Audio (Tom): \"I review my projects and coming tests and add them to my schedule.\"",
+        fillBlankAnswer: "reviews",
+        options: [
+          { key: "A", text: "A. review" },
+          { key: "B", text: "B. reviews" },
+          { key: "C", text: "C. forgets" },
+          { key: "D", text: "D. cancels" }
+        ],
+        correct: "B",
+        paperWarn: true,
+        paperNote: "⚠️ Trên giấy câu 5 đang để trống — Từ cần điền là 'reviews' (có -s)!",
+        explanation: "Từ cần điền (1 từ): 'reviews' (xem lại, rà soát lại). Phải thêm -s vì chủ ngữ là 'Tom' và động từ phía sau là 'adds'.",
+        voiceText: "Part 2, Question 5. Tom reviews his projects and coming tests and adds them to his schedule."
+      }
+    ];
+
+    // Trạng thái ứng dụng
+    let currentMode = "practice"; // 'solved' | 'practice'
+    let currentPart = "all";      // 'all' | 'part1' | 'part2'
+    let soundEnabled = true;
+    let userSelections = {};
+    let wrongAttemptsCount = 0;
+
+    // Trạng thái màn hình Nano Banana Pro × Google Veo AI
+    let activeQuestionIndex = 2; // Mặc định hiển thị Câu 1.3 (Mr Vinh Green Uniform) như ảnh bạn chụp
+    let veoPlaying = true;
+    let veoTick = 0;
+    let currentBananaStyle = "neon";
+
+    // Âm thanh Web Audio API siêu nhẹ
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playWinSound() {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.065);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.065);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.065 + 0.22);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.065);
+          osc.stop(now + idx * 0.065 + 0.24);
+        });
+      } catch (e) {}
+    }
+
+    function playCamSound() {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [310, 255, 200].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.11);
+          osc.frequency.linearRampToValueAtTime(freq - 35, now + idx * 0.11 + 0.1);
+          gain.gain.setValueAtTime(0.12, now + idx * 0.11);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.11 + 0.12);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.11);
+          osc.stop(now + idx * 0.11 + 0.13);
+        });
+      } catch (e) {}
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById("btnSoundToggle").textContent = soundEnabled ? "🔊 Âm thanh: BẬT" : "🔇 Âm thanh: TẮT";
+      if (!soundEnabled && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    let toastTimer = null;
+    function showToast(type, customMsg) {
+      const toast = document.getElementById("camToast");
+      const inner = document.getElementById("camToastInner");
+      const icon = document.getElementById("camToastIcon");
+      const title = document.getElementById("camToastTitle");
+      const sub = document.getElementById("camToastSub");
+
+      if (type === "cam") {
+        inner.className = "px-4 py-3 rounded-2xl shadow-2xl border border-rose-500 bg-rose-950/95 text-rose-100 flex items-center gap-3 backdrop-blur-md";
+        icon.textContent = "🥣";
+        title.textContent = "ĂN CÁM RỒI BRO ƠI!";
+        sub.textContent = customMsg || "Sai mất tiêu! Chọn lại đáp án xanh lá cây nhé!";
+      } else {
+        inner.className = "px-4 py-3 rounded-2xl shadow-2xl border border-emerald-400 bg-emerald-950/95 text-emerald-100 flex items-center gap-3 backdrop-blur-md";
+        icon.textContent = "✅";
+        title.textContent = "CHUẨN XANH LÁ CÂY!";
+        sub.textContent = customMsg || "Chính xác 100%, nhớ bài cực nhanh!";
+      }
+
+      toast.style.opacity = "1";
+      toast.style.transform = "translateY(0)";
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(-20px)";
+      }, 2300);
+    }
+
+    // Chuyển đổi giữa 2 Chức Năng: Đáp Án Đã Giải & Chọn Đáp Án
+    function switchMode(mode) {
+      currentMode = mode;
+      const btnSolved = document.getElementById("btnModeSolved");
+      const btnPractice = document.getElementById("btnModePractice");
+
+      if (mode === "solved") {
+        btnSolved.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500 text-slate-950 shadow-lg transition-all flex items-center gap-1.5 cursor-pointer";
+        btnPractice.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer";
+      } else {
+        btnPractice.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500 text-slate-950 shadow-lg transition-all flex items-center gap-1.5 cursor-pointer";
+        btnSolved.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer";
+      }
+
+      renderQuestions();
+    }
+
+    function filterPart(part) {
+      currentPart = part;
+      ["all", "part1", "part2"].forEach(p => {
+        const el = document.getElementById("tab-" + p);
+        if (p === part) {
+          el.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500 text-slate-950 transition cursor-pointer";
+        } else {
+          el.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer";
+        }
+      });
+      renderQuestions();
+    }
+
+    function updateStats() {
+      let correctCount = 0;
+      QUESTIONS.forEach(q => {
+        if (userSelections[q.id] && userSelections[q.id].includes(q.correct)) {
+          correctCount++;
+        }
+      });
+      document.getElementById("statCorrect").textContent = currentMode === "solved" ? QUESTIONS.length : correctCount;
+      document.getElementById("statCam").textContent = wrongAttemptsCount;
+    }
+
+    function resetAllProgress() {
+      userSelections = {};
+      wrongAttemptsCount = 0;
+      updateStats();
+      renderQuestions();
+      showToast("win", "Đã làm mới toàn bộ 10 câu Listening!");
+    }
+
+    // Chọn đáp án
+    function handleSelectOption(qId, optKey) {
+      const idx = QUESTIONS.findIndex(item => item.id === qId);
+      if (idx !== -1) {
+        selectScene(idx, false);
+      }
+
+      if (currentMode === "solved") return;
+      const q = QUESTIONS[idx];
+      if (!q) return;
+
+      if (!userSelections[qId]) userSelections[qId] = [];
+      if (!userSelections[qId].includes(optKey)) {
+        userSelections[qId].push(optKey);
+      }
+
+      if (optKey === q.correct) {
+        playWinSound();
+        showToast("win", `Chính xác! ${q.fillBlankAnswer ? 'Từ điền là "' + q.fillBlankAnswer + '"' : 'Đáp án ' + optKey} chuẩn xanh lá!`);
+      } else {
+        wrongAttemptsCount++;
+        playCamSound();
+        showToast("cam", `Chọn ${optKey} là ăn cám rồi! Chọn lại đáp án đúng nhé!`);
+      }
+
+      updateStats();
+      renderQuestions();
+    }
+
+    // Kiểm tra ô gõ từ cho Phần 2
+    function handleCheckFillInput(qId) {
+      const inputEl = document.getElementById("input-" + qId);
+      if (!inputEl) return;
+      const val = inputEl.value.trim().toLowerCase().replace(/\s+/g, " ");
+      const q = QUESTIONS.find(item => item.id === qId);
+      if (!q) return;
+
+      const validList = [q.fillBlankAnswer.toLowerCase(), ...(q.altAnswers || []).map(a => a.toLowerCase())];
+      if (validList.includes(val)) {
+        handleSelectOption(qId, q.correct);
+      } else {
+        wrongAttemptsCount++;
+        playCamSound();
+        inputEl.classList.add("option-wrong");
+        setTimeout(() => inputEl.classList.remove("option-wrong"), 550);
+        showToast("cam", `Từ "${inputEl.value || '...'}" chưa đúng — Ăn cám rồi! Hãy thử lại!`);
+        updateStats();
+      }
+    }
+
+    // Render 10 câu hỏi của Exercise 9. Listening
+    function renderQuestions() {
+      const container = document.getElementById("questionsContainer");
+      const filtered = QUESTIONS.filter(q => currentPart === "all" || q.part === currentPart);
+
+      container.innerHTML = filtered.map((q) => {
+        const chosenKeys = userSelections[q.id] || [];
+        const isSolvedMode = currentMode === "solved";
+        const hasGotCorrect = isSolvedMode || chosenKeys.includes(q.correct);
+        const qIndex = QUESTIONS.findIndex(item => item.id === q.id);
+        const isCurrentStage = qIndex === activeQuestionIndex;
+
+        // Tiêu đề phân tách Phần 1 & Phần 2 giống hệt tờ đề cương
+        const partBannerHtml = q.partHeader ? `
+          <div class="pt-2 pb-1">
+            <div class="inline-block px-4 py-2 rounded-2xl bg-slate-900 border border-emerald-500/40 text-emerald-300 font-extrabold text-xs sm:text-sm shadow">
+              ${q.partHeader}
+            </div>
+          </div>
+        ` : "";
+
+        // Khung điền từ (Phần 2)
+        let fillBlankBoxHtml = "";
+        if (q.fillBlankAnswer) {
+          if (isSolvedMode || hasGotCorrect) {
+            fillBlankBoxHtml = `
+              <div class="mt-3 p-3 rounded-2xl bg-emerald-950/85 border-2 border-emerald-400 flex flex-wrap items-center justify-between gap-2 option-solved">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">✍️</span>
+                  <span class="text-xs sm:text-sm text-emerald-200">Từ điền vào chỗ trống:</span>
+                  <span class="px-3 py-1 rounded-lg bg-emerald-400 text-slate-950 font-black text-sm tracking-wide uppercase shadow">
+                    ${q.fillBlankAnswer}
+                  </span>
+                </div>
+                <span class="text-xs font-bold text-emerald-300">✓ Đúng chuẩn (≤ 2 từ)</span>
+              </div>
+            `;
+          } else {
+            fillBlankBoxHtml = `
+              <div class="mt-3 flex flex-wrap items-center gap-2 bg-slate-950/90 p-2.5 rounded-2xl border border-slate-800">
+                <span class="text-xs font-bold text-sky-400 pl-1">✍️ Gõ từ (≤ 2 từ) hoặc chọn đáp án bên dưới:</span>
+                <input
+                  id="input-${q.id}"
+                  type="text"
+                  placeholder="Gõ 1-2 từ tiếng Anh..."
+                  onkeydown="if(event.key==='Enter') handleCheckFillInput('${q.id}')"
+                  class="flex-1 min-w-[160px] px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-400"
+                />
+                <button
+                  onclick="handleCheckFillInput('${q.id}')"
+                  class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition cursor-pointer"
+                >
+                  Kiểm Tra
+                </button>
+              </div>
+            `;
+          }
+        }
+
+        // 4 Đáp án A, B, C, D
+        const optionsHtml = q.options.map(opt => {
+          const isCorrectOpt = opt.key === q.correct;
+          const isClicked = chosenKeys.includes(opt.key);
+
+          let btnClass = "bg-slate-900/90 border-slate-700/80 text-slate-200";
+          let statusBadge = "";
+
+          if (isSolvedMode) {
+            if (isCorrectOpt) {
+              btnClass = "option-solved locked";
+              statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-400 text-slate-950 shadow">✓ ĐÁP ÁN ĐÚNG</span>`;
+            } else {
+              btnClass = "bg-slate-950/50 border-slate-800/60 text-slate-500 opacity-60 locked";
+            }
+          } else {
+            if (isClicked && isCorrectOpt) {
+              btnClass = "option-correct";
+              statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-300 text-slate-950 shadow">🎉 CHUẨN XANH LÁ!</span>`;
+            } else if (isClicked && !isCorrectOpt) {
+              btnClass = "option-wrong";
+              statusBadge = `<span class="cam-badge px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-300 text-slate-950 shadow flex items-center gap-1">🥣 ĂN CÁM!</span>`;
+            }
+          }
+
+          return `
+            <button
+              onclick="handleSelectOption('${q.id}', '${opt.key}')"
+              class="option-btn w-full text-left px-4 py-3.5 rounded-2xl border-2 font-bold text-xs sm:text-sm flex items-center justify-between gap-2 cursor-pointer ${btnClass}"
+            >
+              <span>${opt.text}</span>
+              ${statusBadge}
+            </button>
+          `;
+        }).join("");
+
+        const showExplanation = isSolvedMode || hasGotCorrect;
+        const explanationHtml = showExplanation ? `
+          <div class="mt-3.5 p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 space-y-1.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-extrabold text-emerald-400">💡 Giải Thích & Soi Tờ Đề:</span>
+              <span class="text-xs font-bold ${q.paperWarn ? 'text-amber-300 bg-amber-500/20 border border-amber-400/40' : 'text-emerald-300 bg-emerald-500/20'} px-2.5 py-0.5 rounded-lg">
+                ${q.paperNote}
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${q.explanation}</p>
+            <p class="text-xs text-slate-400 italic">${q.tapescript}</p>
+          </div>
+        ` : "";
+
+        return `
+          ${partBannerHtml}
+          <article class="rounded-3xl bg-slate-900/90 border-2 ${isCurrentStage ? 'border-yellow-400/70 shadow-yellow-500/10' : (q.paperWarn ? 'border-amber-500/50' : 'border-slate-800')} p-4 sm:p-5 shadow-xl transition-all">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-xl text-xs font-extrabold ${q.paperWarn ? 'bg-amber-400 text-slate-950' : 'bg-slate-800 text-emerald-400 border border-slate-700'}">
+                  ${q.badge}
+                </span>
+                ${hasGotCorrect ? `<span class="text-xs font-extrabold text-emerald-400">● Đã Xong</span>` : `<span class="text-xs text-slate-400">● Chưa Giải</span>`}
+              </div>
+
+              <div class="flex items-center gap-1.5">
+                <button
+                  onclick="speakQuestion('${q.id}')"
+                  class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition cursor-pointer"
+                >
+                  🔊 Đọc Câu Này
+                </button>
+                <button
+                  onclick="selectScene(${qIndex}, true)"
+                  class="px-3 py-1.5 rounded-xl ${isCurrentStage ? 'bg-yellow-400 text-slate-950' : 'bg-yellow-400/20 text-yellow-300 border border-yellow-400/40 hover:bg-yellow-400/30'} text-xs font-extrabold transition cursor-pointer flex items-center gap-1"
+                >
+                  <span>🍌🎬</span>
+                  <span>${isCurrentStage ? 'Đang Chiếu Trên Veo AI' : 'Chiếu Cảnh Veo AI'}</span>
+                </button>
+              </div>
+            </div>
+
+            <h3 class="font-extrabold text-sm sm:text-base text-white mb-2 leading-snug">${q.title}</h3>
+
+            ${fillBlankBoxHtml}
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3">
+              ${optionsHtml}
+            </div>
+
+            ${explanationHtml}
+          </article>
+        `;
+      }).join("");
+
+      renderSceneQuickButtons();
+      updateStats();
+    }
+
+    // =========================================================================
+    // TRÌNH ĐỌC GIỌNG NÓI AI (WEB SPEECH API)
+    // =========================================================================
+    function speakRawText(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-US";
+      utter.rate = 0.94;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function speakQuestion(qId) {
+      const q = QUESTIONS.find(item => item.id === qId);
+      if (q) speakRawText(q.voiceText);
+    }
+
+    function speakCurrentScene() {
+      const q = QUESTIONS[activeQuestionIndex];
+      if (q) speakRawText(q.voiceText);
+    }
+
+    function speakFullAudio(which) {
+      if (which === "vinh") {
+        speakRawText(
+          "This was written by Mi, a grade 9 student, who won the first prize in the writing contest called My Favourite Community Helper. There are many great community helpers in our neighbourhood, but my favourite one is Mr Vinh, the garbage collector. Mr Vinh is a tall and slim man. He usually wears a green uniform with reflective stripes. Every day he goes to our neighbourhood at 6 p.m. with a garbage cart. He talks with the people in our community cheerfully about his work and the importance of sorting rubbish."
+        );
+      } else {
+        speakRawText(
+          "Trang: At the beginning of each term, I enter the due dates and test dates into a calendar. I often do these with different colours. Phong: When it's time to start my work, I turn off my cell phone and sign out of social media accounts. Tom: I never leave homework until just before the due date. I review my projects and coming tests and add them to my schedule."
+        );
+      }
+    }
+
+    // =========================================================================
+    // MÀN HÌNH NANO BANANA PRO × GOOGLE VEO AI (10 CẢNH RIÊNG CHO 10 CÂU)
+    // =========================================================================
+    function renderSceneQuickButtons() {
+      const wrap = document.getElementById("sceneQuickButtons");
+      wrap.innerHTML = QUESTIONS.map((q, idx) => {
+        const active = idx === activeQuestionIndex;
+        return `
+          <button
+            onclick="selectScene(${idx}, false)"
+            class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer ${
+              active
+                ? "bg-yellow-400 text-slate-950 shadow"
+                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+            }"
+            title="${q.title}"
+          >
+            ${q.shortLabel}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function selectScene(index, scrollToTopStage) {
+      activeQuestionIndex = index;
+      const q = QUESTIONS[activeQuestionIndex];
+      document.getElementById("stageTitle").textContent = `Nano Banana Pro × Google Veo AI: Câu ${q.shortLabel} (${q.badge})`;
+      const ansDisplay = q.fillBlankAnswer ? `${q.correct} (${q.fillBlankAnswer})` : q.correct;
+      document.getElementById("veoSubtitle").textContent = `Đáp án chuẩn: ${ansDisplay} — ${q.voiceText}`;
+      renderQuestions();
+      if (scrollToTopStage) {
+        document.getElementById("veoStageSection").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }
+
+    function nextScene() {
+      const nextIdx = (activeQuestionIndex + 1) % QUESTIONS.length;
+      selectScene(nextIdx, false);
+    }
+
+    function toggleVeoPlay() {
+      veoPlaying = !veoPlaying;
+      document.getElementById("btnVeoPlay").textContent = veoPlaying ? "⏸ Tạm dừng cảnh" : "▶ Tiếp tục chạy";
+      document.getElementById("veoStatusBadge").textContent = veoPlaying ? "🎬 Google Veo AI: Đang Chạy 60FPS" : "🎬 Google Veo AI: Đã Dừng";
+    }
+
+    function setBananaStyle(style) {
+      currentBananaStyle = style;
+      ["neon", "studio", "blueprint"].forEach(s => {
+        const btn = document.getElementById("style-" + s);
+        if (s === style) {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-yellow-400 text-slate-950 cursor-pointer";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer";
+        }
+      });
+    }
+
+    // Vẽ từng hoạt cảnh riêng biệt cho cả 10 câu Listening
+    function animateVeoStage() {
+      const canvas = document.getElementById("veoCanvas");
+      const ctx = canvas.getContext("2d");
+
+      if (veoPlaying) {
+        veoTick += 0.04;
+      }
+
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      // Nền theo Style Nano Banana Pro
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      if (currentBananaStyle === "neon") {
+        grad.addColorStop(0, "#051b14");
+        grad.addColorStop(0.5, "#0f172a");
+        grad.addColorStop(1, "#1e1b4b");
+      } else if (currentBananaStyle === "studio") {
+        grad.addColorStop(0, "#134e4a");
+        grad.addColorStop(1, "#1e293b");
+      } else {
+        grad.addColorStop(0, "#090d16");
+        grad.addColorStop(1, "#0f172a");
+      }
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Lưới
+      ctx.strokeStyle = "rgba(74, 222, 128, 0.11)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 42) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 42) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      const q = QUESTIONS[activeQuestionIndex];
+      const floatY = Math.sin(veoTick * 2.2) * 8;
+      ctx.textAlign = "center";
+
+      // Vẽ tiêu đề lớn phía trên
+      ctx.fillStyle = "#4ade80";
+      ctx.font = "800 19px Be Vietnam Pro, sans-serif";
+
+      if (q.id === "p1_q1") {
+        ctx.fillText("CÂU 1.1 • WRITING CONTEST: MY FAVOURITE COMMUNITY HELPER", w / 2, 62);
+        // Cúp vàng + Bài dự thi đạt giải Nhất
+        ctx.fillStyle = "#facc15";
+        ctx.beginPath();
+        ctx.arc(280, 175 + floatY, 48, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "900 18px Be Vietnam Pro, sans-serif";
+        ctx.fillText("1ST PRIZE", 280, 181 + floatY);
+
+        ctx.fillStyle = "#16a34a";
+        ctx.strokeStyle = "#86efac";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(380, 115 - floatY * 0.5, 290, 120, 18);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "800 16px Be Vietnam Pro, sans-serif";
+        ctx.fillText("D. My favourite", 525, 165 - floatY * 0.5);
+        ctx.fillText("community helper", 525, 192 - floatY * 0.5);
+      } else if (q.id === "p1_q2") {
+        ctx.fillText("CÂU 1.2 • MR VINH IS A GARBAGE COLLECTOR", w / 2, 62);
+        const cartX = 360 + Math.sin(veoTick * 1.6) * 45;
+        // Xe đẩy thu gom rác xanh lá
+        ctx.fillStyle = "#22c55e";
+        ctx.strokeStyle = "#bbf7d0";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(cartX - 80, 130, 160, 90, 14);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#052e16";
+        ctx.font = "900 15px Be Vietnam Pro, sans-serif";
+        ctx.fillText("GARBAGE CART", cartX, 180);
+
+        // Bánh xe quay
+        ctx.fillStyle = "#facc15";
+        ctx.beginPath();
+        ctx.arc(cartX - 45, 230, 18, 0, Math.PI * 2);
+        ctx.arc(cartX + 45, 230, 18, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (q.id === "p1_q3") {
+        // Cảnh giống bức ảnh bạn chọn nhưng nâng cấp sắc nét hơn
+        ctx.fillText("MR VINH • GREEN UNIFORM + REFLECTIVE STRIPES", w / 2, 62);
+
+        // Đồng hồ 6:00 PM
+        ctx.fillStyle = "#0f172a";
+        ctx.strokeStyle = "#4ade80";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(190, 160, 42, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(190, 160); ctx.lineTo(190, 130);
+        ctx.moveTo(190, 160); ctx.lineTo(190, 184);
+        ctx.stroke();
+        ctx.fillStyle = "#4ade80";
+        ctx.font = "800 15px Be Vietnam Pro, sans-serif";
+        ctx.fillText("6:00 PM", 190, 224);
+
+        // Chú Vinh mặc áo XANH LÁ (Green Uniform) có 2 sọc phản quang phát sáng
+        const vx = 410 + Math.sin(veoTick * 1.5) * 24;
+        const vy = 165 + floatY * 0.4;
+
+        // Mũ & Đầu
+        ctx.fillStyle = "#fde68a";
+        ctx.beginPath();
+        ctx.arc(vx, vy - 50, 22, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#22c55e";
+        ctx.beginPath();
+        ctx.arc(vx, vy - 56, 23, Math.PI, 0);
+        ctx.fill();
+
+        // Thân áo GREEN UNIFORM
+        ctx.fillStyle = "#16a34a";
+        ctx.strokeStyle = "#86efac";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(vx - 44, vy - 24, 88, 104, 16);
+        ctx.fill();
+        ctx.stroke();
+
+        // 2 Sọc phản quang (Reflective Stripes)
+        ctx.fillStyle = "#fef08a";
+        ctx.fillRect(vx - 41, vy + 12, 82, 12);
+        ctx.fillRect(vx - 41, vy + 42, 82, 12);
+
+        // 2 Thùng rác RECYCLE & SORTING
+        ctx.fillStyle = "#22c55e";
+        ctx.fillRect(575, 165, 64, 92);
+        ctx.fillStyle = "#052e16";
+        ctx.font = "800 11px Be Vietnam Pro, sans-serif";
+        ctx.fillText("RECYCLE", 607, 215);
+
+        ctx.fillStyle = "#eab308";
+        ctx.fillRect(652, 165, 64, 92);
+        ctx.fillStyle = "#422006";
+        ctx.fillText("SORTING", 684, 215);
+      } else if (q.id === "p1_q4") {
+        ctx.fillText("CÂU 1.4 • ARRIVES AT MI'S NEIGHBOURHOOD AT 6 P.M.", w / 2, 62);
+        // Đồng hồ lớn 6:00 PM
+        ctx.fillStyle = "#052e16";
+        ctx.strokeStyle = "#22c55e";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(w / 2, 175, 64, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = "#fef08a";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(w / 2, 175); ctx.lineTo(w / 2, 128);
+        ctx.moveTo(w / 2, 175); ctx.lineTo(w / 2, 212);
+        ctx.stroke();
+
+        ctx.fillStyle = "#4ade80";
+        ctx.font = "900 22px Be Vietnam Pro, sans-serif";
+        ctx.fillText("A. 6 p.m", w / 2, 268);
+      } else if (q.id === "p1_q5") {
+        ctx.fillText("CÂU 1.5 • THE IMPORTANCE OF SORTING RUBBISH", w / 2, 62);
+        // 2 thùng phân loại rác chuyển động
+        ctx.fillStyle = "#16a34a";
+        ctx.beginPath();
+        ctx.roundRect(260, 125 + floatY, 130, 125, 16);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "800 15px Be Vietnam Pro, sans-serif";
+        ctx.fillText("RECYCLABLE", 325, 185 + floatY);
+        ctx.fillText("RUBBISH", 325, 208 + floatY);
+
+        ctx.fillStyle = "#eab308";
+        ctx.beginPath();
+        ctx.roundRect(440, 125 - floatY, 150, 125, 16);
+        ctx.fill();
+        ctx.fillStyle = "#0f172a";
+        ctx.fillText("NON-RECYCLABLE", 515, 185 - floatY);
+        ctx.fillText("RUBBISH", 515, 208 - floatY);
+      } else if (q.id === "p2_q1") {
+        ctx.fillText("CÂU 2.1 • TRANG ENTERS WHAT SHE HAS TO DO INTO A CALENDAR", w / 2, 62);
+        // Tờ lịch lớn CALENDAR
+        ctx.fillStyle = "#0f172a";
+        ctx.strokeStyle = "#22c55e";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(280, 100 + floatY * 0.5, 280, 165, 16);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#22c55e";
+        ctx.fillRect(280, 100 + floatY * 0.5, 280, 38);
+        ctx.fillStyle = "#052e16";
+        ctx.font = "900 17px Be Vietnam Pro, sans-serif";
+        ctx.fillText("TERM CALENDAR", 420, 125 + floatY * 0.5);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "800 22px Be Vietnam Pro, sans-serif";
+        ctx.fillText("✍️ calendar", 420, 200 + floatY * 0.5);
+      } else if (q.id === "p2_q2") {
+        ctx.fillText("CÂU 2.2 • TRANG USES DIFFERENT COLOURS ON HER CALENDAR", w / 2, 62);
+        // 3 bút màu Đỏ - Xanh lá - Vàng đánh dấu lịch
+        const colors = [
+          { hex: "#ef4444", label: "RED: Deadlines", x: 240 },
+          { hex: "#22c55e", label: "GREEN: Exams", x: 420 },
+          { hex: "#38bdf8", label: "BLUE: Projects", x: 600 }
+        ];
+        colors.forEach((c, i) => {
+          const cy = 175 + Math.sin(veoTick * 2.5 + i) * 10;
+          ctx.fillStyle = c.hex;
+          ctx.beginPath();
+          ctx.roundRect(c.x - 75, cy - 45, 150, 90, 16);
+          ctx.fill();
+          ctx.fillStyle = "#090d16";
+          ctx.font = "900 14px Be Vietnam Pro, sans-serif";
+          ctx.fillText(c.label, c.x, cy + 5);
+        });
+      } else if (q.id === "p2_q3") {
+        ctx.fillText("CÂU 2.3 • PHONG TURNS OFF HIS CELL PHONE", w / 2, 62);
+        // Điện thoại đang TẮT NGUỒN (TURNS OFF)
+        ctx.fillStyle = "#1e293b";
+        ctx.strokeStyle = "#4ade80";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(355, 95 + floatY * 0.5, 130, 175, 22);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#ef4444";
+        ctx.beginPath();
+        ctx.arc(420, 165 + floatY * 0.5, 26, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 13px Be Vietnam Pro, sans-serif";
+        ctx.fillText("OFF", 420, 170 + floatY * 0.5);
+
+        ctx.fillStyle = "#4ade80";
+        ctx.font = "900 17px Be Vietnam Pro, sans-serif";
+        ctx.fillText("turns off", 420, 235 + floatY * 0.5);
+      } else if (q.id === "p2_q4") {
+        ctx.fillText("CÂU 2.4 • TOM DOES HOMEWORK BEFORE THE DUE DATE", w / 2, 62);
+        ctx.fillStyle = "#16a34a";
+        ctx.strokeStyle = "#bbf7d0";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(270, 115 + floatY * 0.5, 300, 130, 20);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 22px Be Vietnam Pro, sans-serif";
+        ctx.fillText("✓ BEFORE DUE DATE", 420, 175 + floatY * 0.5);
+        ctx.fillStyle = "#fef08a";
+        ctx.font = "800 15px Be Vietnam Pro, sans-serif";
+        ctx.fillText("Không để bài tập sát hạn chót!", 420, 210 + floatY * 0.5);
+      } else if (q.id === "p2_q5") {
+        ctx.fillText("CÂU 2.5 • TOM REVIEWS HIS PROJECTS AND COMING TESTS", w / 2, 62);
+        ctx.fillStyle = "#0f172a";
+        ctx.strokeStyle = "#4ade80";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(260, 110 + floatY * 0.5, 320, 140, 20);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#4ade80";
+        ctx.font = "900 24px Be Vietnam Pro, sans-serif";
+        ctx.fillText("🔍 REVIEWS (có -s)", 420, 168 + floatY * 0.5);
+        ctx.fillStyle = "#e2e8f0";
+        ctx.font = "700 14px Be Vietnam Pro, sans-serif";
+        ctx.fillText("Tom reviews his projects & coming tests", 420, 205 + floatY * 0.5);
+      }
+
+      requestAnimationFrame(animateVeoStage);
+    }
+
+    // Khởi chạy ngay lập tức
+    switchMode("practice");
+    selectScene(2, false); // Mở sẵn cảnh Câu 1.3 (Mr Vinh Green Uniform)
+    animateVeoStage();
+  </script>
+</body>
+</html>
